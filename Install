@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# Install
+#
+cd `dirname $0`
+. ./Configuration
+
+if [ ! -d ${GEOLOAD_INPUTDIR} ]
+then
+    mkdir -p ${GEOLOAD_INPUTDIR}
+fi
+
+if [ ! -d ${GEOLOAD_OUTPUTDIR} ]
+then
+    mkdir -p ${GEOLOAD_OUTPUTDIR}
+fi
+
+if [ ! -d ${GEOLOAD_LOGDIR} ]
+then
+    mkdir -p ${GEOLOAD_LOGDIR}
+fi
+
+if [ ! -d ${GEOLOAD_RPTDIR} ]
+then
+    mkdir -p ${GEOLOAD_RPTDIR}
+fi

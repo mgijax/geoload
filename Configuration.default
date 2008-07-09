@@ -1,0 +1,61 @@
+#!/bin/sh
+
+#
+# Configuration.default
+#
+
+#
+#  If the MGICONFIG environment variable does not have a local override,
+#  use the default "live" settings.
+#
+if [ "${MGICONFIG}" = "" ]
+then
+    MGICONFIG=/usr/local/mgi/live/mgiconfig
+    export MGICONFIG
+fi
+
+. ${MGICONFIG}/master.config.sh
+
+#
+# Directory paths
+#
+GEOLOAD_DATADIR=/data/loads/geo/geoload
+GEOLOAD_INPUTDIR=${GEOLOAD_DATADIR}/input
+GEOLOAD_OUTPUTDIR=${GEOLOAD_DATADIR}/output
+GEOLOAD_LOGDIR=${GEOLOAD_DATADIR}/logs
+GEOLOAD_RPTDIR=${GEOLOAD_DATADIR}/reports
+
+export GEOLOAD_DATADIR GEOLOAD_INPUTDIR GEOLOAD_OUTPUTDIR
+export GEOLOAD_LOGDIR GEOLOAD_RPTDIR
+
+#
+# Input/Output files
+#
+GEOLOAD_INPUTFILE=${GEOLOAD_INPUTDIR}/geoload_input.txt
+GEOLOAD_ACC_BCPFILE=${GEOLOAD_OUTPUTDIR}/ACC_Accession.bcp
+GEOLOAD_LOGFILE=${GEOLOAD_LOGDIR}/geoload.log
+GEOLOAD_RPTFILE=${GEOLOAD_RPTDIR}/geoload.rpt
+
+export GEOLOAD_INPUTFILE GEOLOAD_ACC_BCPFILE
+export GEOLOAD_LOGFILE GEOLOAD_RPTFILE
+
+#
+# GEO query tool settings
+#
+GEOTOOL_DB=gene
+GEOTOOL_MAX_ROWS=100000
+GEOTOOL_URL="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?"
+
+export GEOTOOL_DB GEOTOOL_MAX_ROWS GEOTOOL_URL
+
+#
+# Miscellaneous settings
+#
+GEO_TEMP_TABLE=GEO_Data
+GEO_LOGICAL_DB=GEO
+EG_LOGICAL_DB="Entrez Gene"
+MARKER_MGITYPE=Marker
+GEO_CREATED_BY="GEO Load"
+
+export GEO_TEMP_TABLE GEO_LOGICAL_DB EG_LOGICAL_DB
+export MARKER_MGITYPE GEO_CREATED_BY
