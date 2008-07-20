@@ -72,7 +72,7 @@ import db
 TAB = '\t'
 NL = '\n'
 
-PRIVATE = '0'
+PRIVATE = '1'
 PREFERRED = '1'
 
 #
