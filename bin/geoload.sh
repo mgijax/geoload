@@ -40,7 +40,7 @@
 #         for the load by invoking the GEO query tool.
 #      2) Create the temp table for the input data.
 #      3) Load the input file into the temp table.
-#      4) Call the Python script (emageload.py) to create a bcp file with
+#      4) Call the Python script (geoload.py) to create a bcp file with
 #         GEO associations and a discrepancy report for input records that
 #         could not be processed.
 #      5) Drop the temp table.
