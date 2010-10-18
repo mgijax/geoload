@@ -1,3 +1,9 @@
+TAG: geoload-4-4-0-1
+DATE: 10/18/2010
+STAFF: dbm
+CHANGES:
+1) geoload.sh: fixed copy/paste errors in comments
+
 TAG: geoload-4-1-1-3
 DATE: 07/20/2008
 STAFF: dbm
