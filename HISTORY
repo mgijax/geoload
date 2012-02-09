@@ -1,3 +1,10 @@
+TAG: geoload-4-4-2-1
+DATE: 02/09/2021
+STAFF: sc
+CHANGES: TR10986
+1) getGeoEntrez.py - change 'term': 'gene_geo[filter] to
+   'term': 'gene_geoprofiles[filter]
+
 TAG: geoload-4-4-0-1
 DATE: 10/18/2010
 STAFF: dbm

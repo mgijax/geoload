@@ -65,7 +65,7 @@ geoURL = os.environ['GEOTOOL_URL']
 params = urllib.urlencode(
    {'db': geoDB,
     'retmax': geoMaxRows,
-    'term': 'gene_geo[filter] AND "Mus musculus"[organism]'})
+    'term': 'gene_geoprofiles[filter] AND "Mus musculus"[organism]'})
 
 #
 # Open the output file.
@@ -80,7 +80,8 @@ except:
 # Access the GEO query tools to get the EntrezGene IDs in XML format.
 #
 f = urllib.urlopen("%s%s" % (geoURL,params))
-
+print geoURL
+print params
 #
 # Parse the XML document and close the query tool link.
 #
