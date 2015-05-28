@@ -98,23 +98,16 @@ fi
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Create the temp table (${GEO_TEMP_TABLE}) for the input data" | tee -a ${LOG}
-cat - <<EOSQL | isql -S${MGD_DBSERVER} -D${MGD_DBNAME} -Umgd_dbo -P`cat ${MGD_DBPASSWORDFILE}` -e  >> ${LOG}
-
-use tempdb
-go
+cat - <<EOSQL | psql -h${PG_DBSERVER} -d${PG_DBNAME} -U mgd_dbo -e  >> ${LOG}
 
 create table ${GEO_TEMP_TABLE} (
     entrezgeneID varchar(30) not null
-)
-go
+);
 
-create nonclustered index idx_entrezgeneID on ${GEO_TEMP_TABLE} (entrezgeneID)
-go
+create index idx_entrezgeneID on ${GEO_TEMP_TABLE} (lower(entrezgeneID));
 
-grant all on ${GEO_TEMP_TABLE} to public
-go
+grant all on ${GEO_TEMP_TABLE} to public;
 
-quit
 EOSQL
 
 #
@@ -123,7 +116,7 @@ EOSQL
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Load the input file into the temp table" | tee -a ${LOG}
-cat ${MGD_DBPASSWORDFILE} | bcp tempdb..${GEO_TEMP_TABLE} in ${GEOLOAD_INPUTFILE} -c -t\\t -S${MGD_DBSERVER} -U${MGD_DBUSER} >> ${LOG}
+${PG_DBUTILS}/bin/bcpin.csh ${PG_DBSERVER} ${PG_DBNAME} ${GEO_TEMP_TABLE} "/" ${GEOLOAD_INPUTFILE} "\t" "\n" mgd >> ${LOG}
 
 #
 # Create the GEO association file and discrepancy report.
@@ -150,15 +143,10 @@ fi
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Drop the temp table (${GEO_TEMP_TABLE})" | tee -a ${LOG}
-cat - <<EOSQL | isql -S${MGD_DBSERVER} -D${MGD_DBNAME} -Umgd_dbo -P`cat ${MGD_DBPASSWORDFILE}` -e  >> ${LOG}
+cat - <<EOSQL | psql -h${PG_DBSERVER} -d${PG_DBNAME} -U mgd_dbo -e  >> ${LOG}
 
-use tempdb
-go
+drop table ${GEO_TEMP_TABLE};
 
-drop table ${GEO_TEMP_TABLE}
-go
-
-quit
 EOSQL
 
 #
@@ -176,18 +164,14 @@ fi
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Delete the existing GEO associations" | tee -a ${LOG}
-cat - <<EOSQL | isql -S${MGD_DBSERVER} -D${MGD_DBNAME} -Umgd_dbo -P`cat ${MGD_DBPASSWORDFILE}` -e >> ${LOG}
+cat - <<EOSQL | psql -h${PG_DBSERVER} -d${PG_DBNAME} -U mgd_dbo -e  >> ${LOG}
 
-declare @logicalDBKey int
-select @logicalDBKey = _LogicalDB_key
-from ACC_LogicalDB
-where name = 'GEO'
+delete from ACC_Accession a
+using acc_logicaldb ldb
+where a._LogicalDB_key = ldb._logicaldb_key
+	and ldb.name = 'GEO'
+;
 
-delete from ACC_Accession
-where _LogicalDB_key = @logicalDBKey
-go
-
-quit
 EOSQL
 
 #
@@ -196,7 +180,7 @@ EOSQL
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Load the new GEO associations" | tee -a ${LOG}
-cat ${MGD_DBPASSWORDFILE} | bcp ${MGD_DBNAME}..ACC_Accession in ${GEOLOAD_ACC_BCPFILE} -c -t\\t -S${MGD_DBSERVER} -U${MGD_DBUSER} >> ${LOG}
+${PG_DBUTILS}/bin/bcpin.csh ${PG_DBSERVER} ${PG_DBNAME} ACC_Accession "/" ${GEOLOAD_ACC_BCPFILE} "\t" "\n" mgd >> ${LOG}
 
 date >> ${LOG}
 
