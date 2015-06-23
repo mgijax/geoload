@@ -98,7 +98,7 @@ fi
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Create the temp table (${GEO_TEMP_TABLE}) for the input data" | tee -a ${LOG}
-cat - <<EOSQL | psql -h${PG_DBSERVER} -d${PG_DBNAME} -U mgd_dbo -e  >> ${LOG}
+cat - <<EOSQL | psql -h${MGD_DBSERVER} -d${MGD_DBNAME} -U ${MGD_DBUSER -e  >> ${LOG}
 
 create table ${GEO_TEMP_TABLE} (
     entrezgeneID varchar(30) not null
@@ -116,7 +116,7 @@ EOSQL
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Load the input file into the temp table" | tee -a ${LOG}
-${PG_DBUTILS}/bin/bcpin.csh ${PG_DBSERVER} ${PG_DBNAME} ${GEO_TEMP_TABLE} "/" ${GEOLOAD_INPUTFILE} "\t" "\n" mgd >> ${LOG}
+${PG_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ${GEO_TEMP_TABLE} "/" ${GEOLOAD_INPUTFILE} "\t" "\n" mgd >> ${LOG}
 
 #
 # Create the GEO association file and discrepancy report.
@@ -143,7 +143,7 @@ fi
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Drop the temp table (${GEO_TEMP_TABLE})" | tee -a ${LOG}
-cat - <<EOSQL | psql -h${PG_DBSERVER} -d${PG_DBNAME} -U mgd_dbo -e  >> ${LOG}
+cat - <<EOSQL | psql -h${MGD_DBSERVER} -d${MGD_DBNAME} -U ${MGD_DBUSER -e  >> ${LOG}
 
 drop table ${GEO_TEMP_TABLE};
 
@@ -164,7 +164,7 @@ fi
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Delete the existing GEO associations" | tee -a ${LOG}
-cat - <<EOSQL | psql -h${PG_DBSERVER} -d${PG_DBNAME} -U mgd_dbo -e  >> ${LOG}
+cat - <<EOSQL | psql -h${MGD_DBSERVER} -d${MGD_DBNAME} -U ${MGD_DBUSER -e  >> ${LOG}
 
 delete from ACC_Accession a
 using acc_logicaldb ldb
@@ -180,7 +180,7 @@ EOSQL
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Load the new GEO associations" | tee -a ${LOG}
-${PG_DBUTILS}/bin/bcpin.csh ${PG_DBSERVER} ${PG_DBNAME} ACC_Accession "/" ${GEOLOAD_ACC_BCPFILE} "\t" "\n" mgd >> ${LOG}
+${PG_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ACC_Accession "/" ${GEOLOAD_ACC_BCPFILE} "\t" "\n" mgd >> ${LOG}
 
 date >> ${LOG}
 
