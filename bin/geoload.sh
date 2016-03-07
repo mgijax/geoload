@@ -101,7 +101,7 @@ echo "Create the temp table (${GEO_TEMP_TABLE}) for the input data" | tee -a ${L
 cat - <<EOSQL | psql -h${MGD_DBSERVER} -d${MGD_DBNAME} -U ${MGD_DBUSER} -e  >> ${LOG}
 
 create table ${GEO_TEMP_TABLE} (
-    entrezgeneID varchar(30) not null
+    entrezgeneID text not null
 );
 
 create index idx_entrezgeneID on ${GEO_TEMP_TABLE} (lower(entrezgeneID));

@@ -1,3 +1,8 @@
+AG: geoload-6-0-3-1
+DATE: 03/07/2016
+STAFF: lec 
+CHANGES: TR12083/replace "vachar(30)" with "text"
+
 TAG: geoload-6-0-0-1
 DATE: 7/23/15
 STAFF: pf
