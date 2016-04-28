@@ -66,6 +66,9 @@ import loadlib
 import mgi_utils
 import db
 
+db.setAutoTranslate(False)
+db.setAutoTranslateBE(False)
+
 #
 #  CONSTANTS
 #
@@ -115,17 +118,13 @@ def init ():
     cmds = []
     cmds.append('select max(_Accession_key) + 1 as _Accession_key from ACC_Accession')
 
-    cmds.append('select _LogicalDB_key from ACC_LogicalDB ' + \
-                'where name = \'%s\'' % (geoLogicalDB))
+    cmds.append('select _LogicalDB_key from ACC_LogicalDB where name = \'%s\'' % (geoLogicalDB))
 
-    cmds.append('select _LogicalDB_key from ACC_LogicalDB ' + \
-                'where name = \'%s\'' % (egLogicalDB))
+    cmds.append('select _LogicalDB_key from ACC_LogicalDB where name = \'%s\'' % (egLogicalDB))
 
-    cmds.append('select _MGIType_key from ACC_MGIType ' + \
-                'where name = \'%s\'' % (markerMGIType))
+    cmds.append('select _MGIType_key from ACC_MGIType where name = \'%s\'' % (markerMGIType))
 
-    cmds.append('select _User_key from MGI_User ' + \
-                'where name = \'%s\'' % (createdBy))
+    cmds.append('select _User_key from MGI_User where name = \'%s\'' % (createdBy))
 
     results = db.sql(cmds,'auto')
 
