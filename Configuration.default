@@ -44,7 +44,7 @@ export GEOLOAD_LOGFILE GEOLOAD_RPTFILE
 #
 GEOTOOL_DB=gene
 GEOTOOL_MAX_ROWS=100000
-GEOTOOL_URL="http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?"
+GEOTOOL_URL="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?"
 
 export GEOTOOL_DB GEOTOOL_MAX_ROWS GEOTOOL_URL
 
