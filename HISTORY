@@ -1,3 +1,9 @@
+TAG: geoload-6-0-7-1
+DATE: 01/05/2017
+STAFF: lec 
+CHANGES:
+1) TR12069/obsolete db.setAutoTranslate()
+
 TAG: geoload-6-0-6-1
 DATE: 11/10/2016
 STAFF: lec 
