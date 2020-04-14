@@ -81,7 +81,7 @@ trap "rm -f ${TMP_RC}" 0 1 2 15
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Generate the input file for the load" | tee -a ${LOG}
-{ ./getGeoEntrez.py 2>&1; echo $? > ${TMP_RC}; } >> ${LOG}
+{ ${PYTHON} ./getGeoEntrez.py 2>&1; echo $? > ${TMP_RC}; } >> ${LOG}
 if [ `cat ${TMP_RC}` -ne 0 ]
 then
     echo "GEO load failed" | tee -a ${LOG}
@@ -124,7 +124,7 @@ ${PG_DBUTILS}/bin/bcpin.csh ${MGD_DBSERVER} ${MGD_DBNAME} ${GEO_TEMP_TABLE} "/" 
 echo "" >> ${LOG}
 date >> ${LOG}
 echo "Create the GEO association file and discrepancy report" | tee -a ${LOG}
-{ ./geoload.py 2>&1; echo $? > ${TMP_RC}; } >> ${LOG}
+{ ${PYTHON} ./geoload.py 2>&1; echo $? > ${TMP_RC}; } >> ${LOG}
 if [ `cat ${TMP_RC}` -ne 0 ]
 then
     echo "GEO load failed" | tee -a ${LOG}

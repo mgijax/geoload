@@ -1,5 +1,3 @@
-#!/usr/local/bin/python
-
 #
 #  geoload.py
 ###########################################################################
@@ -59,7 +57,6 @@
 
 import sys
 import os
-import string
 import re
 import accessionlib
 import loadlib
@@ -131,31 +128,31 @@ def init ():
     if len(results[0]) == 1:
         accKey = results[0][0]['_Accession_key']
     else:
-        print 'Cannot determine the next Accession key'
+        print('Cannot determine the next Accession key')
         sys.exit(1)
 
     if len(results[1]) == 1:
         geoLogicalDBKey = results[1][0]['_LogicalDB_key']
     else:
-        print 'Cannot determine the Logical DB key for "' + geoLogicalDB + '"'
+        print('Cannot determine the Logical DB key for "' + geoLogicalDB + '"')
         sys.exit(1)
 
     if len(results[2]) == 1:
         egLogicalDBKey = results[2][0]['_LogicalDB_key']
     else:
-        print 'Cannot determine the Logical DB key for "' + egLogicalDB + '"'
+        print('Cannot determine the Logical DB key for "' + egLogicalDB + '"')
         sys.exit(1)
 
     if len(results[3]) == 1:
         markerMGITypeKey = results[3][0]['_MGIType_key']
     else:
-        print 'Cannot determine the MGI Type key for "' + markerMGIType + '"'
+        print('Cannot determine the MGI Type key for "' + markerMGIType + '"')
         sys.exit(1)
 
     if len(results[4]) == 1:
         createdByKey = results[4][0]['_User_key']
     else:
-        print 'Cannot determine the User key for "' + createdBy + '"'
+        print('Cannot determine the User key for "' + createdBy + '"')
         sys.exit(1)
 
 
@@ -175,7 +172,7 @@ def openFiles ():
     try:
         fpInputFile = open(inputFile, 'r')
     except:
-        print 'Cannot open input file: ' + inputFile
+        print('Cannot open input file: ' + inputFile)
         sys.exit(1)
 
     #
@@ -184,7 +181,7 @@ def openFiles ():
     try:
         fpRptFile = open(rptFile, 'w')
     except:
-        print 'Cannot open report file: ' + rptFile
+        print('Cannot open report file: ' + rptFile)
         sys.exit(1)
 
     #
@@ -193,7 +190,7 @@ def openFiles ():
     try:
         fpAccBCPFile = open(accBCPFile, 'w')
     except:
-        print 'Cannot open output file: ' + accBCPFile
+        print('Cannot open output file: ' + accBCPFile)
         sys.exit(1)
 
     return
@@ -222,7 +219,7 @@ def closeFiles ():
 def createReport ():
     global badIDs
 
-    print 'Create the discrepancy report'
+    print('Create the discrepancy report')
     fpRptFile.write(26*' ' + 'GEO Discrepancy Report' + NL)
     fpRptFile.write(24*' ' + '(' + timestamp + ')' + 2*NL)
     fpRptFile.write('%-15s  %-75s%s' % ('EntrezGene ID','Discrepancy',NL))
@@ -298,14 +295,14 @@ def createReport ():
     for r in results[1]:
         fpRptFile.write('%-15s  %-75s%s' %
             (r['entrezgeneID'], 'EntrezGene ID not associated with a marker', NL))
-        if not badIDs.has_key(r['entrezgeneID']):
+        if r['entrezgeneID'] not in badIDs:
             badIDs[r['entrezgeneID']] = r['entrezgeneID']
         count = count + 1
 
     for r in results[3]:
         fpRptFile.write('%-15s  %-75s%s' %
             (r['entrezgeneID'], 'EntrezGene ID associated with multiple markers', NL))
-        if not badIDs.has_key(r['entrezgeneID']):
+        if r['entrezgeneID'] not in badIDs:
             badIDs[r['entrezgeneID']] = r['entrezgeneID']
         count = count + 1
 
@@ -313,13 +310,13 @@ def createReport ():
         fpRptFile.write('%-15s  %-75s%s' %
             (r['entrezgeneID'], 'EntrezGene ID associated with a marker that has multiple EG associations', NL))
 
-        if not badIDs.has_key(r['entrezgeneID']):
+        if r['entrezgeneID'] not in badIDs:
             badIDs[r['entrezgeneID']] = r['entrezgeneID']
         count = count + 1
 
     fpRptFile.write(NL + 'Number of discrepancies: ' + str(count) + NL)
 
-    print 'Number of discrepancies: ' + str(count)
+    print('Number of discrepancies: ' + str(count))
 
 
 
@@ -333,7 +330,7 @@ def createReport ():
 def createBCPFile ():
     global accKey
 
-    print 'Create the bcp file for the GEO associations'
+    print('Create the bcp file for the GEO associations')
 
     #
     # Find the marker key that the EntrezGene ID should be associated with.
@@ -362,7 +359,7 @@ def createBCPFile ():
         #
         # Skip the EntrezGene ID if it was written to the discrepancy report.
         #
-        if badIDs.has_key(entrezgeneID):
+        if entrezgeneID in badIDs:
             continue
 
         #
@@ -387,7 +384,7 @@ def createBCPFile ():
         count = count + 1
         accKey = accKey + 1
 
-    print 'Number of GEO associations: ' + str(count)
+    print('Number of GEO associations: ' + str(count))
 
 
 

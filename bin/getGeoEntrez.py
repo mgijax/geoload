@@ -1,4 +1,3 @@
-#!/usr/local/bin/python
 #
 #  getGeoEntrez.py
 ###########################################################################
@@ -48,7 +47,7 @@
 
 import sys
 import os
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from xml.dom.minidom import parse
 
 #
@@ -62,12 +61,12 @@ geoURL = os.environ['GEOTOOL_URL']
 #
 # Establish the parameters for the GEO query tool.
 #
-params = urllib.urlencode(
+params = urllib.parse.urlencode(
    {'db': geoDB,
     'retmax': geoMaxRows,
     'term': 'gene_geoprofiles[filter] AND "Mus musculus"[organism]'})
 
-params = urllib.urlencode(
+params = urllib.parse.urlencode(
    {'db': 'gene',
     'retmax': 100000,
     'term': 'gene_geoprofiles[filter] AND "Mus musculus"[organism]'})
@@ -78,17 +77,17 @@ params = urllib.urlencode(
 try:
     fpOutputFile = open(outputFile, 'w')
 except:
-    print 'Cannot open output file: ' + outputFile
+    print('Cannot open output file: ' + outputFile)
     sys.exit(1)
 
 #
 # Access the GEO query tools to get the EntrezGene IDs in XML format.
 #
-f = urllib.urlopen("%s%s" % (geoURL,params))
-f = urllib.urlopen("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?term=gene_geoprofiles%5Bfilter%5D+AND+%22Mus+musculus%22%5Borganism%5D&retmax=100000&db=gene")
+f = urllib.request.urlopen("%s%s" % (geoURL,params))
+f = urllib.request.urlopen("http://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?term=gene_geoprofiles%5Bfilter%5D+AND+%22Mus+musculus%22%5Borganism%5D&retmax=100000&db=gene")
 
-print geoURL
-print params
+print(geoURL)
+print(params)
 #
 # Parse the XML document and close the query tool link.
 #
